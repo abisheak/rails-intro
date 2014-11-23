@@ -4,9 +4,12 @@
 %table#movies
   %thead
     %tr
-      %th %a{ href: "#", title: "Movie Title" }
-      %th %a{ href: "#", title: "Rating" }
-      %th %a{ href: "#", title: "Release Date" }
+      %th 
+        %a{ :href => "#", :title => "Movie Title" }
+      %th 
+        %a{ :href => "#", :title => "Rating" }
+      %th 
+        %a{ :href => "#", :title => "Release Date" }
       %th More Info
   %tbody
     - @movies.each do |movie|
