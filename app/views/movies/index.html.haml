@@ -5,11 +5,11 @@
   %thead
     %tr
       %th 
-        %a{ :action => "/sort", :title => "Movie Title", :id => "title_header" }Movie Title
+        %a{ :action => "sort", :controller => "movies", :title => "Movie Title", :id => "title_header" }Movie Title
       %th 
-        %a{ :action => "/sort", :title => "Rating" }Rating
+        %a{ :action => "sort", :controller => "movies" :title => "Rating" }Rating
       %th 
-        %a{ :action => "/sort", :title => "Release Date", :id => "release_date_header" }Release Date
+        %a{ :action => "sort", :controller => "movies" :title => "Release Date", :id => "release_date_header" }Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|
