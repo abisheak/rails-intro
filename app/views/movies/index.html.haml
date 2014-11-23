@@ -5,11 +5,11 @@
   %thead
     %tr
       %th 
-        %a{ :action => "sort", :controller => "movies", :title => "Movie Title", :id => "title_header" }Movie Title
+        link_to "Movie Title", :controller => "movies", :action => "sort", :id => "title_header" 
       %th 
-        %a{ :action => "sort", :controller => "movies" :title => "Rating" }Rating
+        %link_to "Rating", :action => "sort", :controller => "movies"
       %th 
-        %a{ :action => "sort", :controller => "movies" :title => "Release Date", :id => "release_date_header" }Release Date
+        link_to "Release Date", :action => "sort", :controller => "movies", :id => "release_date_header" 
       %th More Info
   %tbody
     - @movies.each do |movie|
