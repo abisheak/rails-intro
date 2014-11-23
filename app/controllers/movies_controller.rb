@@ -19,7 +19,7 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
-
+    
   def edit
     @movie = Movie.find params[:id]
   end
@@ -36,6 +36,10 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
+  end
+  
+  def sort
+    @movies = Movie.all.sort
   end
 
 end
