@@ -4,12 +4,12 @@
 %table#movies
   %thead
     %tr
-      %th 
-        %a{ :href => "#", :title => "Movie Title" }Movie Title
+      %th.hilite 
+        %a{ :href => "#", :title => "Movie Title", :id => "title_header" }Movie Title
       %th 
         %a{ :href => "#", :title => "Rating" }Rating
       %th 
-        %a{ :href => "#", :title => "Release Date" }Release Date
+        %a{ :href => "#", :title => "Release Date", :id => "release_date_header" }Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|
