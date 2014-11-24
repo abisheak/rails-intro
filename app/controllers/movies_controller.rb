@@ -9,10 +9,13 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     if params[:title]
+        @color = params[:title]
         @movies = Movie.find(:all, :order => 'title')
     elsif params[:rating]
+        @color = params[:rating]
         @movies = Movie.find(:all, :order => 'rating')
     else params[:release_date]
+        @color = params[:release_date]
         @movies = Movie.find(:all, :order => 'release_date DESC')
     end
   end
