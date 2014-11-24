@@ -6,7 +6,7 @@
     %tr
       %th= link_to "Movie Title", { controller: "movies", action: "sort" }, id: "title_header"
       %th= link_to "Rating", { controller: "movies", action: "sort" }
-      %th= link_to "Release Date", { controller: "movies", action: "sort" },id: "release_date_header" 
+      %th= link_to "Release Date", { controller: "movies", action: "sort" }, id: "release_date_header" 
       %th More Info
   %tbody
     - @movies.each do |movie|
