@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
         @movies = Movie.find(:all, :order => 'rating')
     else params[:release_date]
         @color = params[:release_date]
-        @movies = Movie.find(:all, :order => 'release_date DESC')
+        @movies = Movie.find(:all, :order => 'release_date ASC')
     end
   end
 
