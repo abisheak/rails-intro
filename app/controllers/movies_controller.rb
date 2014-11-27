@@ -11,10 +11,13 @@ class MoviesController < ApplicationController
     @movies = Movie.order(params[:sort])
     
     @all_ratings = Movie.uniq.pluck(:rating)
+    
     @selected_ratings ||= @all_ratings
-    if params[:ratings]
-       @selected_ratings = params[:ratings].keys
-       @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings).order(params[:sort])
+    
+    @selected_ratings = params[:ratings].keys if params[:ratings]
+    
+    unless @selected_ratings.empty?
+       @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings)
     end
   end
 
