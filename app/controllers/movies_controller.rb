@@ -13,8 +13,8 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.uniq.pluck(:rating)
     @selected_ratings = {}
     if params[:ratings]
-       @selected_ratings = params[:ratings]
-       @movies = @movies.where('rating IN (?)', params[:ratings].keys).order(params[:sort])
+       @selected_ratings = params[:ratings].keys
+       @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings).order(params[:sort])
     end
   end
 
