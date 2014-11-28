@@ -10,15 +10,17 @@ class MoviesController < ApplicationController
     @movieColor = params[:sort]
     @movies = Movie.order(params[:sort])
     
-    @all_ratings = Movie.uniq.pluck(:rating)
+    @all_ratings = Movie.with_ratings
+    @selected_ratings = @all_ratings unless params[:ratings]
     
-    @selected_ratings ||= @all_ratings
-    
-    @selected_ratings = params[:ratings].keys if params[:ratings]
-    
-    unless @selected_ratings.empty?
-       @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings)
+    if params[:ratings]
+        @selected_ratings = params[:ratings].keys
+        unless @selected_ratings.empty?
+            @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings).order(params[:sort])
+        end
     end
+    session[:id] = @selected_ratings
+    Movie.find(session[:id]) if session[:id].empty?
   end
 
   def new
