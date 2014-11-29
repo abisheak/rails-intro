@@ -7,20 +7,25 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movieColor = params[:sort]
-    @movies = Movie.order(params[:sort])
-    
     @all_ratings = Movie.with_ratings
     @selected_ratings = @all_ratings unless params[:ratings]
+    @movieColor = params[:sort]
+    @movies = Movie.order(params[:sort])
+    if params[:sort]
+        session[:sort] = @movies
+    end
     
     if params[:ratings]
         @selected_ratings = params[:ratings].keys
         unless @selected_ratings.empty?
             @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings).order(params[:sort])
         end
+        session[:ratings] = params[:ratings]
+    else
+        if session[:ratings]
+            redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
+        end
     end
-    session[:id] = @selected_ratings
-    Movie.find(session[:id]) if session[:id].empty?
   end
 
   def new
@@ -49,5 +54,13 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
+  end
+  
+  def url
+    if params[:ratings]
+        session[:url] = params[:ratings].keys 
+        @remember_me = session[:url]
+        @remember_me
+    end
   end
 end
