@@ -11,20 +11,17 @@ class MoviesController < ApplicationController
     @selected_ratings = @all_ratings unless params[:ratings]
     @movieColor = params[:sort]
     @movies = Movie.order(params[:sort])
-    if params[:sort]
-        session[:sort] = @movies
-    end
+    
+    session[:id] = request.fullpath
+
     
     if params[:ratings]
         @selected_ratings = params[:ratings].keys
         unless @selected_ratings.empty?
             @movies = @movies.where('rating IN (:ratings)', :ratings => @selected_ratings).order(params[:sort])
         end
-        session[:ratings] = params[:ratings]
     else
-        if session[:ratings]
-            redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
-        end
+        redirect_to session[:id]
     end
   end
 
