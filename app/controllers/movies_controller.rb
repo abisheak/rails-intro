@@ -8,27 +8,30 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    @movies = Movie.all
     params[:ratings] ? @selected_ratings = params[:ratings].keys : @selected_ratings = @all_ratings
     
-    
-    if params[:sort] && params[:ratings]
-        @movies = Movie.with_ratings(params[:ratings].keys).order(params[:sort])
-    elsif params[:ratings]
-        unless @selected_ratings.empty?
-            @movies = Movie.with_ratings(@selected_ratings)
-        end
-        session[:ratings] = params[:ratings]
-    elsif params[:sort]
+    if params[:sort]
         @movieColor = params[:sort]
-        @movies = Movie.order(params[:sort])
-        session[:sort] = @movieColor
-    else
-        unless params[:sort] || params[:ratings]
-            redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
+        if session[:ratings].nil?
+            @movies = Movie.with_ratings(@selected_ratings).order(params[:sort])
+        else
+            @selected_ratings = session[:ratings]
+            @movies = Movie.with_ratings(session[:ratings]).order(params[:sort])
         end
-    end
-    
+        if session[:sort].nil? || session[:sort] != params[:sort]
+            session[:sort] = params[:sort]
+        end
+    elsif params[:ratings]
+        @movies = Movie.with_ratings(@selected_ratings)
+        if session[:ratings].nil? || session[:ratings] != params[:ratings].keys
+            session[:ratings] = @selected_ratings
+        end
+    else
+        unless params[:ratings] || params[:sort]
+            @selected_ratings = session[:ratings]
+            @movies = Movie.with_ratings(session[:ratings]) 
+        end
+    end        
   end
 
   def new
