@@ -26,10 +26,18 @@ class MoviesController < ApplicationController
         if session[:ratings].nil? || session[:ratings] != params[:ratings].keys
             session[:ratings] = @selected_ratings
         end
+        if session[:sort]
+            session[:sort] = nil
+        end
     else
         unless params[:ratings] || params[:sort]
-            @selected_ratings = session[:ratings]
-            @movies = Movie.with_ratings(session[:ratings]) 
+            if session[:ratings]
+                @selected_ratings = session[:ratings]
+                @movieColor = session[:sort]
+                @movies = Movie.with_ratings(@selected_ratings).order(session[:sort])
+            else
+                @movies = Movie.all
+            end 
         end
     end        
   end
