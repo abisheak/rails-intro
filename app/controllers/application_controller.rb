@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
         if session[:ratings].nil?
             @movies = Movie.with_ratings(@selected_ratings.keys).order(params[:sort])
         else
-            @selected_ratings = session[:ratings]
-            @movies = Movie.with_ratings(session[:ratings]).order(params[:sort])
+            @selected_ratings = session[:ratings].keys
+            @movies = Movie.with_ratings(@selected_ratings).order(params[:sort])
         end
         if session[:sort].nil? || session[:sort] != params[:sort]
             session[:sort] = params[:sort]
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     elsif params[:ratings]
         @movies = Movie.with_ratings(@selected_ratings.keys)
         if session[:ratings].nil? || session[:ratings] != params[:ratings].keys
-            session[:ratings] = @selected_ratings.keys
+            session[:ratings] = @selected_ratings
         end
         if session[:sort]
             session[:sort] = nil
