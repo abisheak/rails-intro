@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -8,38 +8,9 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    params[:ratings] ? @selected_ratings = params[:ratings].keys : @selected_ratings = @all_ratings
+    params[:ratings] ? @selected_ratings = params[:ratings] : @selected_ratings = @all_ratings
     
-    if params[:sort]
-        @movieColor = params[:sort]
-        if session[:ratings].nil?
-            @movies = Movie.with_ratings(@selected_ratings).order(params[:sort])
-        else
-            @selected_ratings = session[:ratings]
-            @movies = Movie.with_ratings(session[:ratings]).order(params[:sort])
-        end
-        if session[:sort].nil? || session[:sort] != params[:sort]
-            session[:sort] = params[:sort]
-        end
-    elsif params[:ratings]
-        @movies = Movie.with_ratings(@selected_ratings)
-        if session[:ratings].nil? || session[:ratings] != params[:ratings].keys
-            session[:ratings] = @selected_ratings
-        end
-        if session[:sort]
-            session[:sort] = nil
-        end
-    else
-        unless params[:ratings] || params[:sort]
-            if session[:ratings]
-                @selected_ratings = session[:ratings]
-                @movieColor = session[:sort]
-                @movies = Movie.with_ratings(@selected_ratings).order(session[:sort])
-            else
-                @movies = Movie.all
-            end 
-        end
-    end        
+    prev_state        
   end
 
   def new
