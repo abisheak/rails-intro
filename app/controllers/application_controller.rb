@@ -13,9 +13,6 @@ class ApplicationController < ActionController::Base
         if session[:sort].nil? || session[:sort] != params[:sort]
             session[:sort] = params[:sort]
         end
-    elsif params[:sort] && params[:ratings]
-        @movieColor = session[:sort]
-        @movies = Movie.with_ratings(session[:ratings]).order(session[:sort])
     elsif params[:ratings]
         @movies = Movie.with_ratings(@selected_ratings.keys)
         if session[:ratings].nil? || session[:ratings] != params[:ratings].keys
@@ -25,12 +22,10 @@ class ApplicationController < ActionController::Base
             session[:sort] = nil
         end
     else
-        unless params[:ratings] || params[:sort]
-            if session[:ratings]
-                redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
-            else
-                @movies = Movie.all
-            end 
+        if session[:ratings] || session[:sort]
+             redirect_to movies_path(:sort => session[:sort], :ratings => session[:ratings])
+        else
+            @movies = Movie.all 
         end
     end
   end
